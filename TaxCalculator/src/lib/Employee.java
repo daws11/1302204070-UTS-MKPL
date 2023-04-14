@@ -1,7 +1,7 @@
 package lib;
 
 import java.time.LocalDate;
-import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,38 +10,37 @@ public class Employee {
 
 	private String employeeId;
 	private String EmployeeName;
-	private String idNumber;
-	private String address;
+
 	
-	private Date dateJoined;
+	private LocalDate dateJoined;
 	private int monthWorkingInYear;
 	
 	private boolean isForeigner;
+	private boolean isMarried;
 	private boolean gender; //true = Laki-laki, false = Perempuan
 	
 	private int monthlySalary;
 	private int otherMonthlyIncome;
 	private int annualDeductible;
 	
-	private String spouseName;
-	private String spouseIdNumber;
 
 	private List<String> childNames;
 	private List<String> childIdNumbers;
 	private int yearJoined;
 	private int monthJoined;
 	
-	public Employee(String employeeId, String EmployeeName,  String idNumber, String address, Date dateJoined, boolean isForeigner, boolean gender) {
+	public Employee(String employeeId, String EmployeeName, String idNumber, String address, String dateJoined, boolean isForeigner, boolean isMarried, boolean gender) {
 		this.employeeId = employeeId;
 		this.EmployeeName = EmployeeName;
-		this.idNumber = idNumber;
-		this.address = address;
-		this.dateJoined = dateJoined;
 		this.isForeigner = isForeigner;
+		this.isMarried = isMarried;
 		this.gender = gender;
 
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		this.dateJoined = LocalDate.parse(dateJoined, formatter);;
+
 		childNames = new LinkedList<String>();
-		childIdNumbers = childNames;
+		childIdNumbers = new LinkedList<String>();
 	}
 	
 	/**
@@ -76,10 +75,6 @@ public class Employee {
 		this.otherMonthlyIncome = income;
 	}
 	
-	public void setSpouse(String spouseName, String spouseIdNumber) {
-		this.spouseName = spouseName;
-		this.spouseIdNumber = idNumber;
-	}
 	
 	public void addChild(String childName, String childIdNumber) {
 		childNames.add(childName);
@@ -91,12 +86,12 @@ public class Employee {
 		//Menghitung berapa lama pegawai bekerja dalam setahun ini, jika pegawai sudah bekerja dari tahun sebelumnya maka otomatis dianggap 12 bulan.
 		LocalDate date = LocalDate.now();
 		
-		if (date.getYear() == yearJoined) {
-			monthWorkingInYear = date.getMonthValue() - monthJoined;
+		if (date.getYear() == dateJoined.getYear()) {
+			monthWorkingInYear = date.getMonthValue() - dateJoined.getMonthValue();
 		}else {
 			monthWorkingInYear = 12;
 		}
 		
-		return TaxFunction.calculateTax(monthlySalary, otherMonthlyIncome, monthWorkingInYear, annualDeductible, spouseIdNumber.equals(""), childIdNumbers.size());
+		return TaxFunction.calculateTax(monthlySalary, otherMonthlyIncome, monthWorkingInYear, annualDeductible, isMarried, childIdNumbers.size());
 	}
 }
