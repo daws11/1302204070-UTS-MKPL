@@ -2,20 +2,18 @@ package lib;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
 public class Employee {
 
 	private String employeeId;
-	private String firstName;
-	private String lastName;
+	private String EmployeeName;
 	private String idNumber;
 	private String address;
 	
-	private int yearJoined;
-	private int monthJoined;
-	private int dayJoined;
+	private Date dateJoined;
 	private int monthWorkingInYear;
 	
 	private boolean isForeigner;
@@ -30,21 +28,20 @@ public class Employee {
 
 	private List<String> childNames;
 	private List<String> childIdNumbers;
+	private int yearJoined;
+	private int monthJoined;
 	
-	public Employee(String employeeId, String firstName, String lastName, String idNumber, String address, int yearJoined, int monthJoined, int dayJoined, boolean isForeigner, boolean gender) {
+	public Employee(String employeeId, String EmployeeName,  String idNumber, String address, Date dateJoined, boolean isForeigner, boolean gender) {
 		this.employeeId = employeeId;
-		this.firstName = firstName;
-		this.lastName = lastName;
+		this.EmployeeName = EmployeeName;
 		this.idNumber = idNumber;
 		this.address = address;
-		this.yearJoined = yearJoined;
-		this.monthJoined = monthJoined;
-		this.dayJoined = dayJoined;
+		this.dateJoined = dateJoined;
 		this.isForeigner = isForeigner;
 		this.gender = gender;
-		
+
 		childNames = new LinkedList<String>();
-		childIdNumbers = new LinkedList<String>();
+		childIdNumbers = childNames;
 	}
 	
 	/**
